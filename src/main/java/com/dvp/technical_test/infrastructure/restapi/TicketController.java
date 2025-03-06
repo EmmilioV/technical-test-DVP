@@ -4,7 +4,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dvp.technical_test.application.dtos.ticket.TicketDTO;
+import com.dvp.technical_test.application.usecases.FilterTicketsUsecases;
 import com.dvp.technical_test.application.usecases.TicketUsecases;
+import com.dvp.technical_test.domain.ticket.entity.Status;
 import com.dvp.technical_test.infrastructure.exception.MissingFieldsException;
 
 import jakarta.validation.Valid;
@@ -23,9 +25,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/tickets")
 public class TicketController {
     private final TicketUsecases ticketUsecases;
+    private final FilterTicketsUsecases filterTicketsUsecases;
 
-    public TicketController(TicketUsecases ticketUsecases) {
+    public TicketController(
+            TicketUsecases ticketUsecases,
+            FilterTicketsUsecases filterTicketsUsecases) {
         this.ticketUsecases = ticketUsecases;
+        this.filterTicketsUsecases = filterTicketsUsecases;
     }
 
     @PostMapping("/create-one")
@@ -70,6 +76,21 @@ public class TicketController {
             @RequestParam(defaultValue = "2") int size,
             @RequestParam(defaultValue = "createdDate") String sortBy) {
         return ticketUsecases.getAllPaginated(pageNumber, size, sortBy);
+    }
+
+    @GetMapping("/get-by-status")
+    public List<TicketDTO> getMethodName(@RequestParam Status status) {
+        return filterTicketsUsecases.filterByStatus(status);
+    }
+
+    @GetMapping("/get-by-personId")
+    public List<TicketDTO> getMethodName(@RequestParam String personId) {
+        return filterTicketsUsecases.filterByPersonId(personId);
+    }
+
+    @GetMapping("/get-by-status-and-personId")
+    public List<TicketDTO> getMethodName(@RequestParam Status status, @RequestParam String personId) {
+        return filterTicketsUsecases.filterByStatusAndPersonId(status, personId);
     }
 
 }
