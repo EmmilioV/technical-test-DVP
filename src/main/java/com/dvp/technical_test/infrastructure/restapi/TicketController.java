@@ -9,6 +9,7 @@ import com.dvp.technical_test.application.usecases.TicketUsecases;
 import com.dvp.technical_test.domain.ticket.entity.Status;
 import com.dvp.technical_test.infrastructure.exception.MissingFieldsException;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+@Tag(name = "Tickets", description = "Endpoints para gestión de tickets")
 @RestController
 @RequestMapping("/tickets")
 public class TicketController {

@@ -9,6 +9,7 @@ import com.dvp.technical_test.application.dtos.person.PersonDTO;
 import com.dvp.technical_test.application.usecases.PersonUsecases;
 import com.dvp.technical_test.infrastructure.exception.MissingFieldsException;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
+@Tag(name = "Usuarios", description = "Endpoints para gestión de usuarios")
 @RestController()
 @RequestMapping(value = "/persons")
 public class PersonController {

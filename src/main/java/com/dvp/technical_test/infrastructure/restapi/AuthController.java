@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import com.dvp.technical_test.infrastructure.security.JwtUtil;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Autenticacion", description = "Endpoint para la obtención del bearer token.")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
