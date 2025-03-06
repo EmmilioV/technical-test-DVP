@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -41,5 +42,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(OptimisticLockingFailureException.class)
     public ResponseEntity<String> handleOptimisticLockingFailureException(OptimisticLockingFailureException e) {
         return new ResponseEntity<String>("error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<String> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+        return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

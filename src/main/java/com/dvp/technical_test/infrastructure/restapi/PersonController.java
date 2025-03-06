@@ -12,7 +12,6 @@ import com.dvp.technical_test.infrastructure.exception.MissingFieldsException;
 import jakarta.validation.Valid;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,13 +50,9 @@ public class PersonController {
         return personUsecases.getAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get-one/{id}")
     public PersonDTO getMethodName(@PathVariable String id) {
-        if (id == null) {
-            throw new MissingFieldsException("Id is required");
-        }
-
-        return personUsecases.getByID(UUID.fromString(id));
+        return personUsecases.getByID(id);
     }
 
 }

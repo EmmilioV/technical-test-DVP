@@ -2,7 +2,6 @@ package com.dvp.technical_test.application.usecases;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -38,10 +37,8 @@ public class PersonUsecases {
 
         Person person = personConverter.toPersonfromPersonDTO(personDTO);
 
-        Optional<Person> personFound = personRepository.findById(person.getId());
-        if (!personFound.isPresent()) {
-            throw new BusinessException("person not found");
-        }
+        personRepository.findById(person.getId())
+                .orElseThrow(() -> new BusinessException("person not exists"));
 
         return personConverter.toPersonDTOfromPerson(personRepository.save(person));
     }
@@ -53,12 +50,9 @@ public class PersonUsecases {
                 .toList();
     }
 
-    public PersonDTO getByID(UUID id) {
-        Optional<Person> personFound = personRepository.findById(id);
-        if (!personFound.isPresent()) {
-            throw new BusinessException("person not found");
-        }
-
-        return personConverter.toPersonDTOfromPerson(personFound.get());
+    public PersonDTO getByID(String id) {
+        return personRepository.findById(UUID.fromString(id))
+                .map(personConverter::toPersonDTOfromPerson)
+                .orElseThrow(() -> new BusinessException("person not found"));
     }
 }
