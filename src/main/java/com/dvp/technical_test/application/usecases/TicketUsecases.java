@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -42,6 +44,7 @@ public class TicketUsecases {
         return ticketConverter.toTicketDTOFromTicket(ticketSaved);
     }
 
+    @CachePut(value = "ticketsCache", key = "#ticketDTO.id")
     public TicketDTO update(TicketDTO ticketDTO) {
 
         ticketDTO.setUpdatedDate(LocalDateTime.now());
@@ -61,6 +64,7 @@ public class TicketUsecases {
         ticketRepository.deleteById(UUID.fromString(ticketId));
     }
 
+    @Cacheable(value = "ticketsCache", key = "#ticketId")
     public TicketDTO getById(String ticketId) {
         return ticketRepository.findById(UUID.fromString(ticketId))
                 .map(ticketConverter::toTicketDTOFromTicket)
