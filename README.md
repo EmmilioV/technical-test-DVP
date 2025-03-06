@@ -1,63 +1,78 @@
-# CRUD Básico para Personas/Usuarios y Tickets
+# **CRUD de Personas y Tickets con Spring Boot**
 
-Este proyecto fue desarrollado como parte de una prueba técnica. Implementa un CRUD para la gestión de usuarios y tickets, desarrollado en **Java 17** con **Spring Boot 3.4.3**. Además, incluye autenticación con **JWT**, almacenamiento en caché con **Caffeine**, y documentación mediante **Swagger**.
+Este proyecto fue desarrollado como parte de una prueba técnica. Implementa un CRUD para gestionar usuarios y tickets, utilizando Java con Spring Boot. Además, cuenta con autenticación mediante JWT, almacenamiento en caché con Caffeine y documentación con Swagger.
 
-## 🚀 Tecnologías Utilizadas
-
+## 🚀 **Tecnologías utilizadas**
 - **Java 17**
 - **Spring Boot 3.4.3**
-- **Spring Security con JWT (0.12.3)**
-- **Spring Data JPA**
-- **H2 Database (Base de datos en memoria)**
-- **Caffeine Cache (3.0.4)**
-- **Swagger para documentación (2.7.0)**
-- **Maven**
-
-## ⚠️ Precaución
-
-El archivo `application.properties` contiene el **secret key**, **username** y **password** necesarios para realizar pruebas en local. **Esto no debe utilizarse en entornos de producción**.
-
-📌 **Nota:** `{noop}` no forma parte de la contraseña, solo indica que no está encriptada.
-
-## 📌 Funcionalidades
-
-1. **Gestión de Personas**
-   - Crear y actualizar una persona.
-   - Consultar todas las personas o buscar una por su ID.
-
-2. **Gestión de Tickets**
-   - Crear, actualizar y eliminar un ticket.
-   - Consultar tickets por ID o paginados.
-   - Filtrar tickets por estado (**ABIERTO**, **CERRADO**) y por ID de persona.
-
-## 🛠️ Instalación y Ejecución
-
-### 1️⃣ Clonar el Repositorio
-```sh
- git clone <URL_DEL_REPOSITORIO>
- cd <NOMBRE_DEL_PROYECTO>
-```
-
-### 2️⃣ Ejecutar el Proyecto con Maven
-```sh
- ./mvnw spring-boot:run
-```
-
-### 3️⃣ Acceder a la Documentación de la API
-La documentación de los endpoints está disponible en Swagger:
-```sh
- https://localhost:8082/swagger-ui/index.html
-```
-
-### 4️⃣ Autenticarse y Autorizar en Swagger
-1. Ejecuta el endpoint de autenticación con el `username` y `password` definidos en `application.properties`.
-2. Copia el token generado.
-3. En la interfaz de Swagger, haz clic en el botón **"Authorize"** (esquina superior derecha) e ingresa el token.
-4. Ahora puedes probar los endpoints protegidos. 🚀
+- **JWT 0.12.3** (Autenticación y autorización)
+- **Spring Data JPA** (Persistencia de datos)
+- **Caffeine 3.0.4** (Caché)
+- **Swagger 2.7.0** (Documentación de API)
 
 ---
 
-## 👨‍💻 Autor
+## ⚠ **Consideraciones**
+- El archivo `application.properties` contiene credenciales predeterminadas **(solo para pruebas locales)**.  
+- `{noop}` en la contraseña indica que **no está encriptada**. **¡No utilizar en producción!**
+
+---
+
+## 🔧 **Instalación y ejecución**
+1. Clona el repositorio:
+   ```sh
+   git clone https://github.com/EmmilioV/technical-test-DVP.git
+   cd technical-test-DVP
+   ```
+2. Ejecuta el proyecto con Maven:
+   ```sh
+   ./mvnw spring-boot:run
+   ```
+3. Accede a Swagger para revisar la documentación de los endpoints:
+   - [Swagger UI](http://localhost:8082/swagger-ui/index.html)
+
+---
+
+## 🛠 **Autenticación y uso de la API**
+Antes de realizar peticiones, **obtén un token JWT**.
+
+### **1️⃣ Obtener token de autenticación**
+```sh
+curl --location --request POST 'http://localhost:8082/auth/login?username=admin&password=admin'
+```
+📌 **Respuesta esperada:**
+```json
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR..."
+}
+```
+
+---
+
+### **2️⃣ Crear una persona**
+```sh
+curl --location --request POST 'http://localhost:8082/persons/create-one' \
+--header 'Authorization: Bearer <TOKEN>' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "firstName": "Pablo",
+    "lastName": "Villa"
+}'
+```
+
+---
+
+### **3️⃣ Crear un ticket**
+```sh
+curl --location --request POST 'http://localhost:8082/tickets/create-one' \
+--header 'Authorization: Bearer <TOKEN>' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "personId": "<ID DE LA PERSONA CREADA>",
+    "description": "ticket de prueba 1",
+    "status": "ABIERTO"
+}'
+```
+
+## ❤️ **Autor**
 Hecho con ❤️ por **Pablo Emilio Villa**.
-
-
